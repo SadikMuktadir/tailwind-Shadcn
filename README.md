@@ -1,50 +1,160 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Tailwind + Shadcn + React-router-dom
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Tailwind launched version 4.0.0
 
-## Expanding the ESLint configuration
+So,there is problem to install tailwind with shadcn
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Here is steps to solved the problem
 
-- Configure the top-level `parserOptions` property like this:
+
+## Install React-router dom v6.28.2
+
 
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+npm create vite@latest name-of-your-project -- --template react
+# follow prompts
+cd <your new project directory>
+npm install react-router-dom localforage match-sorter sort-by
+```
+
+## Install tailwind css v3.4.17
+
+```js
+npm install -D tailwindcss postcss autoprefixer
+```
+
+After that it automatically installed version 4.0.0.So, you need to update version in package.json
+
+![image](https://github.com/user-attachments/assets/0827ab23-57e6-44f4-bc98-e91eb031b4f7)
+
+
+Then follow 
+
+
+```js
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+
+## Install Shadcn
+
+Add this import header in your main css file, src/index.css in our case:
+```js
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+
+Configure the tailwind template paths in tailwind.config.js:
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+```
+
+
+Edit tsconfig.json file
+```js
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+
+
+```
+Edit tsconfig.app.json file
+```js
+{
+  "compilerOptions": {
+    // ...
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+    // ...
+  }
+}
+
+```
+Update vite.config.ts
+
+```js
+npm install -D @types/node
+
+```
+```js
+import path from "path"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 })
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+```
+Run the shadcn-ui init command to setup your project:
 
 ```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+npx shadcn@latest init
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+That's it
+You can now start adding components to your project.
+
+```js
+npx shadcn@latest add button
+
+```
+```js
+import { Button } from "@/components/ui/button"
+
+export default function Home() {
+  return (
+    <div>
+      <Button>Click me</Button>
+    </div>
+  )
+}
+
+```
+
+
+run the terminal
+```js
+npm run dev
+```
+
+Final Result 
+![image](https://github.com/user-attachments/assets/4e55f82f-ba9d-40ab-8a34-31fef8c5af15)
+
+
